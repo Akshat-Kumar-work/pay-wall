@@ -2,8 +2,8 @@
 
 export default function Page(): JSX.Element {
   return (
-        <div  className="">
-
+        <div  className=" flex bg-black text-white">
+            hi there
         </div>
   );
 }
