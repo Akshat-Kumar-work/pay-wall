@@ -1,6 +1,9 @@
 import db from "@repo/db/client";
 import CredentialsProvider from "next-auth/providers/credentials"
 import bcrypt from "bcrypt";
+import GoogleProvider from "next-auth/providers/google";
+import { signIn } from "next-auth/react";
+
 
 export const authOptions = {
     providers: [
@@ -10,9 +13,9 @@ export const authOptions = {
             email: { label: "Email", type: "text", placeholder: "hy@gmail.com" },
             password: { label: "Password", type: "password" }
           },
-          // TODO: User credentials type from next-aut
+       
           async authorize(credentials: any) {
-            // Do zod validation, OTP validation here
+          
             const hashedPassword = await bcrypt.hash(credentials.password, 10);
             const existingUser = await db.user.findFirst({
                 where: {
@@ -51,16 +54,60 @@ export const authOptions = {
 
             return null
           },
-        })
+        }),
+      GoogleProvider({
+            clientId: process.env.GOOGLE_ID || "",
+            clientSecret:process.env.GOOGLE_SECRET || ""
+          })
     ],
-    secret: process.env.JWT_SECRET || "secret",
     callbacks: {
+        async signIn({account,profile}:any){
+            if(account.provider === "google"){
+                try{
+
+                    const existingUser = await db.user.findFirst({
+                        where:{
+                            email: profile.email
+                        }
+                    })
+                    if (existingUser) {
+                            return {
+                                id: existingUser.id.toString(),
+                                name: existingUser.name,
+                                email: existingUser.email
+                            }
+                    }
+                    else{
+                    const hashedPassword = await bcrypt.hash(profile.email, 10);
+                    
+                        const newUser = await db.user.create({
+                            data:{
+                                email: profile.email,
+                                password: hashedPassword,
+                                name: profile.name
+                            }
+                        });
+
+                        return{
+                            id: newUser.id.toString(),
+                            name:newUser.name,
+                            email:newUser.email
+                        }
+                    }
+                }
+                catch(e){
+                    console.log("err while singin callback",e);
+                }
+            }
+
+            return true;
+        },
         // TODO: can u fix the type here? Using any is bad
         async session({ token, session }: any) {
             session.user.id = token.sub
-
             return session
         }
-    }
+    },
+    secret: process.env.JWT_SECRET || "secret",
   }
  
