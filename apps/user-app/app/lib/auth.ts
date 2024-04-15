@@ -1,5 +1,4 @@
 import db from "@repo/db/client";
-// const db = new PrismaClient();
 import CredentialsProvider from "next-auth/providers/credentials"
 import bcrypt from "bcrypt";
 
@@ -8,7 +7,7 @@ export const authOptions = {
       CredentialsProvider({
           name: 'Credentials',
           credentials: {
-            phone: { label: "Phone number", type: "text", placeholder: "1231231231" },
+            email: { label: "Email", type: "text", placeholder: "hy@gmail.com" },
             password: { label: "Password", type: "password" }
           },
           // TODO: User credentials type from next-aut
@@ -17,7 +16,7 @@ export const authOptions = {
             const hashedPassword = await bcrypt.hash(credentials.password, 10);
             const existingUser = await db.user.findFirst({
                 where: {
-                    number: credentials.phone
+                    email: credentials.email
                 }
             });
 
@@ -27,7 +26,7 @@ export const authOptions = {
                     return {
                         id: existingUser.id.toString(),
                         name: existingUser.name,
-                        email: existingUser.number
+                        email: existingUser.email
                     }
                 }
                 return null;
@@ -36,7 +35,7 @@ export const authOptions = {
             try {
                 const user = await db.user.create({
                     data: {
-                        number: credentials.phone,
+                        email: credentials.email,
                         password: hashedPassword
                     }
                 });
@@ -44,7 +43,7 @@ export const authOptions = {
                 return {
                     id: user.id.toString(),
                     name: user.name,
-                    email: user.number
+                    email: user.email
                 }
             } catch(e) {
                 console.error(e);
