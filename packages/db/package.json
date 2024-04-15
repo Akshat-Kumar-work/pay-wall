@@ -2,8 +2,7 @@
   "name": "@repo/db",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "exports":{
+  "exports": {
     "/client": "./index.ts"
   },
   "scripts": {
@@ -13,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^5.12.1"
+    "@prisma/client": "^5.12.1",
+    "prisma": "^5.12.1"
   }
 }

@@ -2,9 +2,11 @@
 
 import { combineReducers } from "@reduxjs/toolkit";
 import userReducer from "./slices/userSlice";
+import balanceReducer from "./slices/balanceSlice";
 
 const rootReducer = combineReducers({
-    userSlice : userReducer
+    user : userReducer,
+    balance:balanceReducer
 })
 
 export default rootReducer;

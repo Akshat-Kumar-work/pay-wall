@@ -1,5 +1,7 @@
 "use client"
 
+//custom client side provider for redux store to wrap the children of server side component"
+
 import { ReactNode } from 'react';
 import { Provider } from "react-redux"
 import Store from "@repo/store/store"
