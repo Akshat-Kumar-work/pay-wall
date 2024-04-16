@@ -1,13 +1,13 @@
 import express from "express";
 import db from "@repo/db/client";
 const app = express();
+app.listen(3001);
 
 app.get("/",(req,res)=>{
     return res.json({
         "mess":"server working fine"
     })
 })
-
 
 interface paymentInformationType {
     token : string,
