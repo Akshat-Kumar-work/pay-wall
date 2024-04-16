@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "exports": {
-    "./store": "./src/index.ts"
+    "./store": "./src/index.ts",
+    "./balanceSlice": "./src/slices/balanceSlice.ts",
+    "./userSlice":"./src/slices/userSlice.ts"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
