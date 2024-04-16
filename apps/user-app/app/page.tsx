@@ -1,15 +1,12 @@
-
-// import {useSelector} from "react-redux";
+"use client"
 
 
 export default function Page(): JSX.Element {
 
-  // const {user} = useSelector((state:any)=>state.user);
-  // const {balance} = useSelector((state:any)=>state.balance);
 
   return (
-        <div  className=" flex bg-black text-white">
-            hi there
+        <div className=" flex justify-center items-center">
+            app page
         </div>
   );
 }
