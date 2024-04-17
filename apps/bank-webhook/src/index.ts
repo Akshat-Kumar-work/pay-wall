@@ -1,9 +1,12 @@
 import express from "express";
 import db from "@repo/db/client";
 const app = express();
-app.listen(3001);
+
+app.use(express.json());
+
 
 app.get("/",(req,res)=>{
+    console.log(`app running on port ${3001}`)
     return res.json({
         "mess":"server working fine"
     })
@@ -16,15 +19,16 @@ interface paymentInformationType {
 }
 
 //bank will hit this endpoint to update the user balance wallet
-app.post("/hdfcWebhook",async(req,res)=>{
+app.post("/paywall/bankwebhook",async(req,res)=>{
 
     try{
 
         const paymentInformation : paymentInformationType = {
             token : req.body.token,
-            userId : req.body.user_indentifier,
+            userId : req.body.userId,
             amount : req.body.amount
         }
+        console.log(paymentInformation)
         
         //using transactions to do 2 db query in single request so that if 1 fail 2nd also fail's 
         await db.$transaction([
@@ -49,14 +53,16 @@ app.post("/hdfcWebhook",async(req,res)=>{
             })
         ])
 
-        res.status(200).json({
+      return  res.status(200).json({
             mess:"req captured and updated"
         })
     }
     catch(e){
+        console.log(e);
       return  res.status(500).json({
             mess:"internal server error",
         })
     }
 })
 
+app.listen(3001);
