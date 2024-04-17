@@ -2,7 +2,11 @@ import db from "@repo/db/client";
 import CredentialsProvider from "next-auth/providers/credentials"
 import bcrypt from "bcrypt";
 import GoogleProvider from "next-auth/providers/google";
-import { signIn } from "next-auth/react";
+
+// interface credentialsType {
+//     email: string;
+//     password:string;
+// }
 
 
 export const authOptions = {
@@ -14,7 +18,7 @@ export const authOptions = {
             password: { label: "Password", type: "password" }
           },
        
-          async authorize(credentials: any) {
+          async authorize(credentials:any ) {
           
             const hashedPassword = await bcrypt.hash(credentials.password, 10);
             const existingUser = await db.user.findFirst({
