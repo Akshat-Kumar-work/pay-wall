@@ -1,9 +1,13 @@
+import { Transactions } from "../../../components/Transactions";
+import { getOnRampTransactions } from "../../lib/AllTransactionAction"
 
-
-const transactions = () => {
+const  transaction  = async () => {
+  const transactions = await getOnRampTransactions();
   return (
-    <div>transactions</div>
+    <div>
+      <Transactions transactions={transactions}/>
+    </div>
   )
 }
 
-export default transactions
+export default transaction;
