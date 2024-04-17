@@ -21,13 +21,17 @@ export const OnRampTransactions = ({ transactions }:
               <div className="text-slate-600 text-xs">
                 {singleTransaction.time.toDateString()}
               </div>
-
-              <div className=" text-sm">{singleTransaction.provider}</div>
-
             </div>
 
-            <div className="flex flex-col">
+            <div className="flex flex-col  items-end ">
+
+              <div>
               + Rs {singleTransaction.amount / 100}
+              </div>
+
+              <div>
+                {singleTransaction.status}
+              </div>
             </div>
 
           </div>
