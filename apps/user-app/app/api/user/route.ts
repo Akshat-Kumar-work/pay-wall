@@ -1,3 +1,5 @@
+"use server"
+
 import { getServerSession } from "next-auth"
 import { authOptions } from "../../lib/auth"
 import { NextResponse } from "next/server";
@@ -15,7 +17,5 @@ export const GET= async()=>{
    }
     return NextResponse.json({
         mess:"You are not logged in "
-    }),{
-        status:403
-    }
+    })
 }
