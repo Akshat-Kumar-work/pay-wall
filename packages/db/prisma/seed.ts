@@ -4,10 +4,10 @@ const prisma = new PrismaClient()
 
 async function main() {
   const alice = await prisma.user.upsert({
-    where: { number: '1111111111' },
+    where: { email: 'alice@gmail.com' },
     update: {},
     create: {
-      number: '1111111111',
+      email: 'alice@gmail.com',
       password: await bcrypt.hash('alice', 10),
       name: 'alice',
       Balance: {
@@ -28,15 +28,16 @@ async function main() {
     },
   })
   const bob = await prisma.user.upsert({
-    where: { number: '2222222222' },
+    where: { email: 'bob@gmail.com' },
     update: {},
     create: {
-      number: '2222222222',
+      email: 'bob@gmail.com',
       password: await bcrypt.hash('bob', 10),
       name: 'bob',
       Balance: {
         create: {
-            amount: 2000,
+          // here this is 20 ruppes we store decimal in financial application because of precision issues
+            amount: 3000,
             locked: 0
         }
       },
@@ -44,7 +45,7 @@ async function main() {
         create: {
           startTime: new Date(),
           status: "Failed",
-          amount: 2000,
+          amount: 3000,
           token: "token__2",
           provider: "HDFC Bank",
         },
