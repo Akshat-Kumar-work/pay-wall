@@ -14,15 +14,22 @@ export const OnRampTransactions = ({ transactions }:
       <div className="pt-2">
         {transactions.map((singleTransaction) => (
           <div className="flex justify-between">
+
             <div>
-              <div className="text-sm">Received INR</div>
+              <div className="text-sm font-bold">Received INR</div>
+            
               <div className="text-slate-600 text-xs">
                 {singleTransaction.time.toDateString()}
               </div>
+
+              <div className=" text-sm">{singleTransaction.provider}</div>
+
             </div>
-            <div className="flex flex-col justify-center">
+
+            <div className="flex flex-col">
               + Rs {singleTransaction.amount / 100}
             </div>
+
           </div>
         ))}
       </div>

@@ -10,6 +10,7 @@ export const BalanceCard = ({amount, locked}: {
                 Unlocked balance
             </div>
             <div>
+                {/* //here we are dividing it by 100 cause we had stored the amount as 2 ruppes * 100; because we can't store money in decimal value in financial application due to some precision issue */}
                 {amount / 100} INR
             </div>
         </div>
