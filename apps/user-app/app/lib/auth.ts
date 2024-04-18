@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import bcrypt from "bcrypt";
 import GoogleProvider from "next-auth/providers/google";
 
+
 // interface credentialsType {
 //     email: string;
 //     password:string;
@@ -17,9 +18,10 @@ export const authOptions = {
             email: { label: "Email", type: "text", placeholder: "hy@gmail.com" },
             password: { label: "Password", type: "password" }
           },
-       
-          async authorize(credentials:any ) {
+
           
+          async authorize(credentials:any ) {
+            console.log("credentials data",credentials)
             const hashedPassword = await bcrypt.hash(credentials.password, 10);
             const existingUser = await db.user.findFirst({
                 where: {
@@ -30,6 +32,7 @@ export const authOptions = {
             if (existingUser) {
                 const passwordValidation = await bcrypt.compare(credentials.password, existingUser.password);
                 if (passwordValidation) {
+                    console.log("existing user from credentials",existingUser)
                     return {
                         id: existingUser.id.toString(),
                         name: existingUser.name,
