@@ -1,8 +1,12 @@
-
+import ChangePasswordComponent from "../../../components/ChangePassword"
 
 const dashboard = () => {
+
+  
   return (
-    <div>dashboard</div>
+    <div className=" w-full">
+      <ChangePasswordComponent/>
+    </div>
   )
 }
 
