@@ -16,9 +16,7 @@ export function AppbarClient() {
   const { user } = useSelector((state: any) => state.user);
 
   useEffect(() => {
-    dispatch(setUser(session.data?.user));
-    console.log("session user", session.data?.user);
-    console.log("redux user", user);
+    dispatch(setUser(session.data?.user))
   }, [session.data?.user]);
 
   return (
