@@ -29,7 +29,7 @@ const p2pCard = () => {
           <Button
             onClick={async () => {
               await transfer(toemail, amount * 100);
-             location.reload();
+             window.location.reload();
             }} >
             Transfer
           </Button>

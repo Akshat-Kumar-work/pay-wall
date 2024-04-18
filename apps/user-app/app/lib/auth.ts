@@ -2,6 +2,7 @@ import db from "@repo/db/client";
 import CredentialsProvider from "next-auth/providers/credentials"
 import bcrypt from "bcrypt";
 import GoogleProvider from "next-auth/providers/google";
+import { redirect } from "next/dist/server/api-utils";
 
 
 // interface credentialsType {
@@ -15,8 +16,9 @@ export const authOptions = {
       CredentialsProvider({
           name: 'Credentials',
           credentials: {
+            name:{label:"Name",type:"text",placeholder:"Your Name"},
             email: { label: "Email", type: "text", placeholder: "hy@gmail.com" },
-            password: { label: "Password", type: "password" }
+            password: { label: "Password", type: "password" , placeholder:"Always Change Password after 1st Signup" }
           },
 
           
@@ -45,6 +47,7 @@ export const authOptions = {
             try {
                 const user = await db.user.create({
                     data: {
+                        name:credentials.name,
                         email: credentials.email,
                         password: hashedPassword
                     }
@@ -85,7 +88,6 @@ export const authOptions = {
                                 email: existingUser.email
                             }
                     }
-
                     else{
                     const hashedPassword = await bcrypt.hash(profile.email, 10);
                         const newUser = await db.user.create({

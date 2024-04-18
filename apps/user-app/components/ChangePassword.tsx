@@ -25,7 +25,7 @@ const changePasswordComponent = () => {
           {user.user?.email}</div>
 
         <div className=" p-3">
-        <TextInput   placeholder="Password" label="Change Password" onChange={(password)=>{setPassword(password)}} />
+        <TextInput   placeholder="Always Change Password after 1st Signup" label="Change Password" onChange={(password)=>{setPassword(password)}} />
         </div>
 
         <div className=" p-3">
