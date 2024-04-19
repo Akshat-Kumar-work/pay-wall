@@ -28,38 +28,76 @@ app.post("/paywall/bankwebhook",async(req,res)=>{
             userId : req.body.userId,
             amount : req.body.amount
         }
-        console.log(paymentInformation)
-        
+
+        const userData = await db.user.findUnique({
+            where:{
+                id:paymentInformation.userId
+            },
+            include:{
+                Balance:true ,
+                OnRampTransaction:true
+            }
+        })
+
+if(userData?.Balance.length === 0){
         //using transactions to do 2 db query in single request so that if 1 fail 2nd also fail's 
         await db.$transaction([
-             db.balance.update({
-                where:{
-                    userId: paymentInformation.userId
-                },
-                data:{
-                    amount:{
-                        increment: paymentInformation.amount
-                    }
-                }
-            }),
-        
-            db.onRampTransaction.update({
-                where:{
-                    token: paymentInformation.token
-                },
-                data:{
-                    status:"Success"
-                }
-            })
-        ])
 
-      return  res.status(200).json({
-            mess:"req captured and updated"
-        })
-    }
+            db.balance.create({
+               data:{
+                userId:paymentInformation.userId,
+                   amount:paymentInformation.amount,
+                   locked:0
+               }
+           }),
+       
+           db.onRampTransaction.updateMany({
+               where:{
+                   token: String(paymentInformation.token)
+               },
+               data:{
+                   status:"Success"
+               }
+           })
+       ])
+
+     return  res.status(200).json({
+           mess:"req captured and updated"
+       })
+}
+else{
+        //using transactions to do 2 db query in single request so that if 1 fail 2nd also fail's 
+        await db.$transaction([
+            // updating balance not creating for the one having balance none
+            //the prisma will throw error saying no records found
+            db.balance.updateMany({
+               where:{
+                   userId: Number(paymentInformation.userId)
+               },
+               data:{
+                   amount:{
+                       increment: Number(paymentInformation.amount)
+                   }
+               }
+           }),
+       
+           db.onRampTransaction.updateMany({
+               where:{
+                   token: String(paymentInformation.token)
+               },
+               data:{
+                   status:"Success"
+               }
+           })
+       ])
+
+     return  res.status(200).json({
+           mess:"req captured and updated"
+       })
+}  }
     catch(e){
         console.log(e);
-      return  res.status(500).json({
+      return  res.status(411).json({
             mess:"internal server error",
         })
     }
