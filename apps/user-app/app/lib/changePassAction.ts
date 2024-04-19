@@ -8,6 +8,8 @@ import bcrypt from "bcrypt";
 export const changePassword = async(password:string)=>{
 
     const session = await getServerSession(authOptions);
+
+    console.log("session data",session);
    
 
     if(!session?.user || !session.user?.id){
@@ -20,7 +22,7 @@ export const changePassword = async(password:string)=>{
         
         const userData = await prisma.user.findUnique({
             where:{
-                id:Number(session.user.id)
+               email:String(session.user.email)
             }
         })
     
@@ -30,10 +32,11 @@ export const changePassword = async(password:string)=>{
             }
         }
         const hashedPassword = await bcrypt.hash(password, 10);
+        console.log(hashedPassword);
 
         const updatedUser = await prisma.user.update({
             where:{
-                id:Number(session.user.id)
+                email:String(session.user.email)
             },
             data:{
                 password:String(hashedPassword)

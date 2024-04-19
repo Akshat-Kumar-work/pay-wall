@@ -2,7 +2,6 @@ import db from "@repo/db/client";
 import CredentialsProvider from "next-auth/providers/credentials"
 import bcrypt from "bcrypt";
 import GoogleProvider from "next-auth/providers/google";
-import { redirect } from "next/dist/server/api-utils";
 
 
 // interface credentialsType {
@@ -82,11 +81,14 @@ export const authOptions = {
                     })
                     if (existingUser) {
                     console.log("existing user from google",existingUser);
-                            return {
-                                id: existingUser.id.toString(),
-                                name: existingUser.name,
-                                email: existingUser.email
-                            }
+                    return true;
+                            // return {
+                               
+                            //     id: existingUser.id.toString(),
+                            //     name: existingUser.name,
+                            //     email: existingUser.email
+                            // }
+                            
                     }
                     else{
                     const hashedPassword = await bcrypt.hash(profile.email, 10);
@@ -98,39 +100,42 @@ export const authOptions = {
                             }
                         });
                         console.log("new user from google",newUser);
-                        return{
-                            id: newUser.id.toString(),
-                            name:newUser.name,
-                            email:newUser.email
-                        }
+                        return true;
+                        // return{
+                          
+                        //     id: newUser.id.toString(),
+                        //     name:newUser.name,
+                        //     email:newUser.email
+                        // }
                     }
                 }
                 catch(e){
                     console.log("err while singin callback",e);
+                    return false;
                 }
-            }
 
+
+            }
             return true;
         },
         // TODO: can u fix the type here? Using any is bad
-        async session({ token, session }: any) {
+        async session({ session }: any) {
+          
             
             //here we are giving condition if the user is having image that means it is logged in by google provider 
             //so do db operation and get the user id because the google provider give random google id into token subject(sub), which is false and give pain in ass while fetching user data from db from frontend
-            if(session.user.image){
+            if(session.user.email){
                 const userData = await db.user.findFirst({
                     where:{
-                        email : session.email
+                        email : session.user?.email
                     }
                 });
+               
 
                 //if no image in user data of session that means user is signed in by credentials so we can use jwt sub which is same as user id  of user in db 
                 session.user.id = userData?.id;
                 return session
             }
- 
-                session.user.id = token.sub
-                return session
        
         }
     },

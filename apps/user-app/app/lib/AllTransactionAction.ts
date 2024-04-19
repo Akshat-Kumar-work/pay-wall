@@ -17,7 +17,7 @@ export async function getOnRampTransactions() {
     });
 
     //returning all on ramp transaction of current user id 
-    return onRampTransaction.map(t => ({
+    return onRampTransaction.map((t:any) => ({
         time: t.startTime,
         amount: t.amount,
         status: t.status,

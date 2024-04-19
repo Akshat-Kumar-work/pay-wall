@@ -1,0 +1,10 @@
+{
+    "extends": ["//"],
+    "globalDependencies": ["**/.env.*local"],
+    "pipeline": {
+      "build": {
+        "outputs": ["dist/**"]
+      }
+    }
+  }
+  

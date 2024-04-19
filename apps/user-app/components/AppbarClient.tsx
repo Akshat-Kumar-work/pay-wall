@@ -13,7 +13,7 @@ export function AppbarClient() {
   const session = useSession();
   const router = useRouter();
   const dispatch = useDispatch();
-  const { user } = useSelector((state: any) => state.user);
+
 
   useEffect(() => {
     dispatch(setUser(session.data?.user))

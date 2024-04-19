@@ -18,8 +18,7 @@ const getP2pTransacData = async ()=>{
             fromUser:true
         }
     })
-
-    return transaction.map( singleTransac=>({
+    return transaction.map( (singleTransac:any)=>({
      
             id: singleTransac.id,
             amount: singleTransac.amount,

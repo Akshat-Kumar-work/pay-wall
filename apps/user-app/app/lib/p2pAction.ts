@@ -6,6 +6,7 @@ import { authOptions } from "./auth";
 
 
 
+
 export const transfer = async(toemail:string,amount:number)=>{
     const sessionData =await  getServerSession(authOptions);
     if(!sessionData?.user || !sessionData.user?.id){
@@ -28,7 +29,7 @@ export const transfer = async(toemail:string,amount:number)=>{
 
     await db.$transaction(
 
-        async (client)=>{
+        async (client:any):Promise<void>=>{
             //LOCKING THE ROW to ensure there will be one request after another sequentially
             await client.$queryRaw`SELECT * FROM "Balance" WHERE "userId" = ${Number(sessionData.user.id)} FOR UPDATE`;
             const fromBalance = await client.balance.findUnique({

@@ -11,18 +11,28 @@
             mess:"Unauthenticated request"
         }
     }
-
-
+   try{
     const balance = await prisma.balance.findFirst({
         where: {
             userId: Number(session?.user?.id)
+        },
+        include:{
+            user:true
         }
     });
+
+    console.log("balance details",balance);
+
+
 
     return {
         amount: balance?.amount || 0,
         locked: balance?.locked || 0
     }
+   }
+   catch(e){
+    console.log("err while fetching balance data",e);
+   }
 }
 
 export default getBalance;

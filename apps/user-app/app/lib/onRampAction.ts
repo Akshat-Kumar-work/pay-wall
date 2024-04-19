@@ -20,7 +20,8 @@ const onRampTransactionAction = async(amount:number,provider:string)=>{
     const token = (Math.random()*1000).toString();
 
     try{
-        const transactionEntry =    await prisma.onRampTransaction.create({
+
+           await prisma.onRampTransaction.create({
             data:{
                 provider:provider,
                 status:"Processing",
