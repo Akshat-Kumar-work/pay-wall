@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import CustomProvider from "../customStoreProvider";
 import { AppbarClient } from "../components/AppbarClient";
-import { SpeedInsights } from "@vercel/speed-insights/next"
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -20,10 +19,8 @@ export default function RootLayout({
     <html lang="en">
           <CustomProvider>
           <body className={inter.className}>
-
             <AppbarClient/>
             {children}
-            <SpeedInsights/>
             </body>
           </CustomProvider>
     </html>
