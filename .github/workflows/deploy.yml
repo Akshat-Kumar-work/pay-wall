@@ -1,0 +1,32 @@
+#CD PIPELINE FILE
+
+name: Build and Deploy to Docker Hub
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest   #on ubuntu machine
+    steps:
+    - name: Check Out Repo     #checkout code base
+      uses: actions/checkout@v2
+
+    - name: Log in to Docker Hub    #log into docker hub repo
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}    #with username coming from github secret
+        password: ${{ secrets.DOCKER_PASSWORD }}    #with password coming from github secret
+
+    - name: Build and Push Docker image             #build image and pushed the image to docker hub repo
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: ./docker/Dockerfile.userApp           #docker file path
+        push: true
+        tags: akshatwork6/user-app-image  # dockerhub username/ repo name where we have to push the image
+
+    - name: Verify Pushed Image            # pull the created image from docker hub repo
+      run: docker pull akshatwork6/user-app-image   #command to pull the image
