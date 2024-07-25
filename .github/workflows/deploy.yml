@@ -41,4 +41,4 @@ jobs:
           sudo docker pull akshatwork6/user-app-image:latest
           sudo docker stop web-app || true
           sudo docker rm web-app || true
-          sudo docker run -e DATABASE_URL ${{secrets.DB_URL}} -d --name web-app -p 3005:3000 akshatwork6/user-app-image
+          sudo docker run -e DATABASE_URL=${{secrets.DB_URL}} -d --name web-app --restart unless-stopped -p 3005:3000 akshatwork6/user-app-image
