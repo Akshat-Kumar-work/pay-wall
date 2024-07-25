@@ -26,7 +26,7 @@ jobs:
         context: .
         file: ./docker/Dockerfile.userApp           #docker file path
         push: true
-        tags: akshatwork6/user-app-image  # dockerhub username/ repo name where we have to push the image
+        tags: akshatwork6/user-app-image:latest  # dockerhub username/ repo name where we have to push the image
 
     - name: Verify Pushed Image            # pull the created image from docker hub repo
       run: docker pull akshatwork6/user-app-image:latest   #command to pull the image
