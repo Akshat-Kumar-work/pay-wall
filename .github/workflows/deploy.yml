@@ -38,10 +38,6 @@ jobs:
     username: ${{ secrets.SSH_USERNAME }}
     key: ${{ secrets.SSH_KEY }}
     script: |
-      echo "JWT_SECRET=${{ secrets.JWT_SECRET }}"
-      echo "DATABASE_URL=${{ secrets.DB_URL }}"
-      echo "GOOGLE_SECRET=${{ secrets.GOOGLE_SECRET }}"
-      echo "GOOGLE_ID=${{ secrets.GOOGLE_ID }}"
       sudo docker pull akshatwork6/user-app-image:latest
       sudo docker stop web-app || true
       sudo docker rm web-app || true
