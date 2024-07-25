@@ -29,4 +29,16 @@ jobs:
         tags: akshatwork6/user-app-image  # dockerhub username/ repo name where we have to push the image
 
     - name: Verify Pushed Image            # pull the created image from docker hub repo
-      run: docker pull akshatwork6/user-app-image   #command to pull the image
+      run: docker pull akshatwork6/user-app-image:latest   #command to pull the image
+    
+    - name: Deploy to EC2                   #after the commit happend and pulled image from the docker hub ,this will deploy it to ec2 machine 
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          sudo docker pull akshatwork6/user-app-image:latest
+          sudo docker stop web-app || true
+          sudo docker rm web-app || true
+          sudo docker run -d --name web-app -p 3005:3000 akshatwork6/user-app-image
