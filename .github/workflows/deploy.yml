@@ -32,14 +32,19 @@ jobs:
       run: docker pull akshatwork6/user-app-image:latest   #command to pull the image
     
     - name: Deploy to EC2
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USERNAME }}
-        key: ${{ secrets.SSH_KEY }}
-        script: |
-          sudo docker pull akshatwork6/user-app-image:latest
-          sudo docker stop web-app || true
-          sudo docker rm web-app || true
-          sudo docker run -e JWT_SECRET=${{ secrets.JWT_SECRET }} -e DATABASE_URL=${{ secrets.DB_URL }} -e GOOGLE_SECRET=${{ secrets.GOOGLE_SECRET }} -e GOOGLE_ID=${{ secrets.GOOGLE_ID }} -d --name web-app --restart unless-stopped -p 3005:3000 akshatwork6/user-app-image:latest
+  uses: appleboy/ssh-action@master
+  with:
+    host: ${{ secrets.SSH_HOST }}
+    username: ${{ secrets.SSH_USERNAME }}
+    key: ${{ secrets.SSH_KEY }}
+    script: |
+      echo "JWT_SECRET=${{ secrets.JWT_SECRET }}"
+      echo "DATABASE_URL=${{ secrets.DB_URL }}"
+      echo "GOOGLE_SECRET=${{ secrets.GOOGLE_SECRET }}"
+      echo "GOOGLE_ID=${{ secrets.GOOGLE_ID }}"
+      sudo docker pull akshatwork6/user-app-image:latest
+      sudo docker stop web-app || true
+      sudo docker rm web-app || true
+      sudo docker run -e JWT_SECRET=${{ secrets.JWT_SECRET }} -e DATABASE_URL=${{ secrets.DB_URL }} -e GOOGLE_SECRET=${{ secrets.GOOGLE_SECRET }} -e GOOGLE_ID=${{ secrets.GOOGLE_ID }} -d --name web-app --restart unless-stopped -p 3005:3000 akshatwork6/user-app-image:latest
+
 
