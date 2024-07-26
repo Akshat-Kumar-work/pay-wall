@@ -44,5 +44,6 @@ jobs:
                             -e DATABASE_URL=${{ secrets.DATABASE_URL }} \
                             -e GOOGLE_SECRET=${{ secrets.GOOGLE_SECRET }} \
                             -e GOOGLE_ID=${{ secrets.GOOGLE_ID }} \
+                            -e NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }} \
                             -d --name web-app --restart unless-stopped -p 80:3000 akshatwork6/user-app-image:latest
 
